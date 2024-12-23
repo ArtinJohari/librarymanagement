@@ -16,6 +16,15 @@ public class Book {
     private List<Author> authors;
     @ManyToOne
     private Borrower borrower;
+    private boolean available = true;
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
 
     public List<Author> getAuthors() {
         return authors;

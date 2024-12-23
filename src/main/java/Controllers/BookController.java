@@ -1,7 +1,9 @@
 package Controllers;
 
 import Entities.Book;
+import Entities.Borrower;
 import Services.BookService;
+import Services.BorrowerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,9 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private BorrowerService borrowerService;
 
     @RequestMapping("/books")
     public List<Book> getAllBooks() {
@@ -31,6 +36,22 @@ public class BookController {
     @RequestMapping("/books/{isbn}")
     public List<Book> getBookByISBN(@PathVariable String isbn) {
         return bookService.getBooksByIsbn(isbn);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/{bookId}/borrow/{borrowerId}")
+    public void borrowBook(@PathVariable Integer bookId, @PathVariable Integer borrowerId) {
+        Borrower borrower = borrowerService.getBorrowerById(borrowerId);
+        Book borrowedBook = bookService.borrowBook(bookId, borrower);
+        borrower.getBorrowedBooks().add(borrowedBook);
+        borrowerService.addBorrower(borrower);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/{bookId}/return/{borrowerId}")
+    public void returnBook(@PathVariable Integer bookId, @PathVariable Integer borrowerId) {
+        Borrower borrower = borrowerService.getBorrowerById(borrowerId);
+        Book returnedBook = bookService.returnBook(bookId);
+        borrower.getBorrowedBooks().remove(returnedBook);
+        borrowerService.addBorrower(borrower);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/books")

@@ -14,6 +14,14 @@ public class Borrower {
     @OneToMany(mappedBy = "borrower")
     private List<Book> borrowedBooks;
 
+    public List<Book> getBorrowedBooks() {
+        return borrowedBooks;
+    }
+
+    public void setBorrowedBooks(List<Book> borrowedBooks) {
+        this.borrowedBooks = borrowedBooks;
+    }
+
     public int getId() {
         return id;
     }

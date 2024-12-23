@@ -12,13 +12,18 @@ import java.util.List;
 public class BorrowerService {
     @Autowired
     private BorrowerRepository borrowerRepository;
+
     public List<Borrower> getAllBorrowers() {
         List<Borrower> borrowers = new ArrayList<>();
         borrowerRepository.findAll().forEach(borrowers::add);
         return borrowers;
     }
-    public Borrower getBorrowerById(Integer id) {
-        return borrowerRepository.findById(id).filter(t -> t.getId() == id).get();
+    public Borrower getBorrowerById(Integer BorrowerId) {
+        Borrower borrower = borrowerRepository.findById(BorrowerId).orElse(null);
+        if (borrower == null) {
+            throw new IllegalArgumentException("Borrower not found");
+        }
+        return borrower;
     }
     public List<Borrower> getBorrowerByName(String name) {
         List<Borrower> borrowers = new ArrayList<>();
