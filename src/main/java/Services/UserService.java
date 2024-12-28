@@ -24,8 +24,6 @@ public class UserService {
     }
 
     public List<User> getUserByUsername(String username) {
-        List<User> users = new ArrayList<>();
-        userRepository.findByUsername(username).forEach(users::add);
-        return users;
+        return new ArrayList<>(userRepository.findByUsername(username));
     }
 }
